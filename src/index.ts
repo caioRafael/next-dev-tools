@@ -1,3 +1,5 @@
 export { setupInspector } from './setup'
 export { applyAxiosInterceptor } from './patchers/axios-interceptor'
 export type { AxiosInterceptorConfig } from './patchers/axios-interceptor'
+export { InspectorPanel, useInspectorEvents } from './ui'
+export type { InspectorPanelProps, InspectorEventWithId } from './ui'

@@ -126,6 +126,64 @@ A função retorna uma função para remover os interceptors quando necessário.
 
 Veja mais detalhes em [example/README.md](./example/README.md)
 
+## Componente UI Flutuante
+
+A biblioteca inclui um componente React de UI flutuante que exibe os eventos em tempo real na aplicação.
+
+**⚠️ Requisito:**
+- WebSocket URL para comunicação servidor ↔ cliente
+
+O componente usa estilos inline e não requer Tailwind CSS ou outras dependências de estilo.
+
+```tsx
+'use client'
+
+import { InspectorPanel } from 'next-dev-tools'
+
+export default function Layout({ children }) {
+  return (
+    <>
+      {children}
+      <InspectorPanel 
+        position="bottom-right"
+        maxEvents={100}
+        defaultMinimized={false}
+        websocketUrl="ws://localhost:3001" // Mesma URL usada no setupInspector
+      />
+    </>
+  )
+}
+```
+
+**Importante:** O `websocketUrl` deve ser a mesma URL configurada no `setupInspector` do servidor. Os eventos são enviados do servidor para o cliente via WebSocket.
+
+
+### Props do InspectorPanel
+
+- `position` (`'bottom-right' | 'bottom-left' | 'top-right' | 'top-left'`): Posição do painel na tela (padrão: `'bottom-right'`)
+- `maxEvents` (`number`): Número máximo de eventos a manter (padrão: `100`)
+- `defaultMinimized` (`boolean`): Se `true`, o painel começa minimizado (padrão: `false`)
+
+### Hook useInspectorEvents
+
+Você também pode usar o hook diretamente para criar sua própria UI:
+
+```tsx
+import { useInspectorEvents } from 'next-dev-tools'
+
+function MyCustomInspector() {
+  const { events, clearEvents } = useInspectorEvents(50)
+  
+  return (
+    <div>
+      {events.map(event => (
+        <div key={event.id}>{event.type}</div>
+      ))}
+    </div>
+  )
+}
+```
+
 ## Exemplo de Saída no Terminal
 
 ```

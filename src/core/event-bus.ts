@@ -1,4 +1,5 @@
 import {InspectorEvent} from './type'
+import { send } from './transport/websocket'
 
 type Listener = (event: InspectorEvent) => void
 
@@ -10,7 +11,11 @@ export function on(listener: Listener) {
 }
 
 export function emit(event: InspectorEvent) {
+  // Notifica listeners locais
   for (const listener of listeners) {
     listener(event)
   }
+  
+  // Envia para WebSocket (para comunicação servidor -> cliente)
+  send(event)
 }
